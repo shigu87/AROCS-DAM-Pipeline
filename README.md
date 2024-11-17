@@ -102,20 +102,21 @@ Processed data that can be used for analysis, auditing, security monitoring, and
 ## 8. Real-World Usefulness
 This pipeline is particularly valuable for industries such as:
 
-Banking and Finance: To monitor database activities for security audits and compliance.
-Healthcare: Ensuring data privacy by auditing database access and activities.
-E-commerce: Monitoring user interactions with databases for anomaly detection.
-General IT Security: For tracking suspicious activities and protecting sensitive data.
+-- Banking and Finance: To monitor database activities for security audits and compliance.
+-- Healthcare: Ensuring data privacy by auditing database access and activities.
+-- E-commerce: Monitoring user interactions with databases for anomaly detection.
+-- General IT Security: For tracking suspicious activities and protecting sensitive data.
 ## 9. Future Improvements
-Real-Time Processing: Integrating Apache Kafka or other streaming tools to enable real-time log processing.
-Enhanced Error Handling: Implementing advanced error recovery mechanisms, such as retries for failed processes and notifications for critical data issues.
-Cloud Optimization: Further optimizing the pipeline for cloud-native environments, leveraging services such as AWS Glue, Google BigQuery, and Azure Data Lake for better performance and reliability.
+-- Real-Time Processing: Integrating Apache Kafka or other streaming tools to enable real-time log processing.
+-- Enhanced Error Handling: Implementing advanced error recovery mechanisms, such as retries for failed processes and notifications for critical data issues.
+-- Cloud Optimization: Further optimizing the pipeline for cloud-native environments, leveraging services such as AWS Glue, Google BigQuery, and Azure Data Lake for better performance and reliability.
+
 ## 10. Error Handling and Logging
 The pipeline incorporates robust error-handling mechanisms:
 
-Missing DAM Logs: Logs an error message and skips processing for that specific date.
-Missing ARCOS Logs: Logs an error message for the CAN_ID and skips further processing for that ID.
-Data Mismatches: Skips mismatched or incomplete entries and logs the discrepancies for future review.
+-- Missing DAM Logs: Logs an error message and skips processing for that specific date.
+--Missing ARCOS Logs: Logs an error message for the CAN_ID and skips further processing for that ID.
+--Data Mismatches: Skips mismatched or incomplete entries and logs the discrepancies for future review.
 Example:
 
 if dam_df.count() == 0:
