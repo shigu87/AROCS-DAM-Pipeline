@@ -47,10 +47,11 @@ The pipeline workflow can be divided into the following steps:
 Ensure that the required packages are installed:
 
 bash
+'''
 pip install pyspark
 pip install google-cloud-storage
 pip install pandas
-
+'''
 
 ### Step 2: Configure Input and Output Paths
 Set up the paths for where your DAM and ARCOS logs are stored and where the processed data will be saved. These paths can point to a cloud bucket (e.g., GCS) or an on-premise location.
@@ -118,15 +119,17 @@ The pipeline incorporates robust error-handling mechanisms:
 - **Missing ARCOS Logs**: Logs an error message for the CAN_ID and skips further processing for that ID.
 - **Data Mismatches**: Skips mismatched or incomplete entries and logs the discrepancies for future review.
 Example:
-
+'''
 if dam_df.count() == 0:
     print(f"No DAM logs found for the date {date}. Skipping to next.")
     return
-
+'''
+'''
 if arcos_df.count() == 0:
     print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
     return
-    
+'''  
+
 ## 11. Running the Pipeline
 **Step 1**: Install Required Packages
 Ensure all necessary packages are installed as shown in the Setup Instructions.
@@ -136,8 +139,9 @@ Place your DAM and ARCOS log files in the specified input locations.
 
 **Step 3**: Execute the Pipeline
 Run the script using the command line:
-
+'''
 python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
+'''
 --
 
 ## Step 4: Review Output
