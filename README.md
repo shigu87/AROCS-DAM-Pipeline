@@ -1,44 +1,48 @@
-DAM and ARCOS Log Processing Pipeline
-Table of Contents
-Introduction
-Technologies Used
-Project Workflow
-Setup Instructions
-Detailed Steps of the Pipeline
-Challenges Faced
-Outcome
-Real-World Usefulness
-Future Improvements
-Error Handling and Logging
-Running the Pipeline
-Introduction
+# DAM and ARCOS Log Processing Pipeline
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Technologies Used](#technologies-used)
+- [Project Workflow](#project-workflow)
+- [Setup Instructions](#setup-instructions)
+- [Detailed Steps of the Pipeline](#detailed-steps-of-the-pipeline)
+- [Challenges Faced](#challenges-faced)
+- [Outcome](#outcome)
+- [Real-World Usefulness](#real-world-usefulness)
+- [Future Improvements](#future-improvements)
+- [Error Handling and Logging](#error-handling-and-logging)
+- [Running the Pipeline](#running-the-pipeline)
+
+
+## Introduction
 Monitoring user behavior, database activities, and system interactions is crucial for security and compliance in organizations. The DAM (Database Activity Monitoring) and ARCOS (Access Control System) Log Processing Pipeline is designed to process logs from these two sources, merge them efficiently, and produce an integrated dataset ready for further analysis, auditing, or compliance reporting. This pipeline ensures the seamless processing of potentially large volumes of logs, integrates data from different sources, and manages missing data effectively.
 
-Technologies Used
-Apache Spark: For parallel and distributed data processing.
-Python: For scripting the pipeline logic and orchestration.
-PySpark: To leverage Spark's distributed processing capabilities.
-Cloud Storage (e.g., GCS, AWS S3): For storing input and output data.
-Logging Libraries: To log events and issues during execution.
-Jupyter Notebooks (Optional): For interactive development and testing.
-Project Workflow
+## Technologies Used
+- **Apache Spark**: For parallel and distributed data processing.
+- **Python**: For scripting the pipeline logic and orchestration.
+- **PySpark**: To leverage Spark's distributed processing capabilities.
+- **Cloud Storage (e.g., GCS, AWS S3)**: For storing input and output data.
+- **Logging Libraries**: To log events and issues during execution.
+- **Jupyter Notebooks (Optional)**: For interactive development and testing.
+
+## Project Workflow
 The pipeline workflow can be divided into the following steps:
+1. **Data Ingestion**: Load DAM and ARCOS logs from specified input paths.
+2. **Data Transformation**: Parse and preprocess the logs for consistency and readiness for merging.
+3. **Data Merging**: Match and merge DAM and ARCOS logs using user IDs (CAN_ID) and timestamps, with a defined time window to handle discrepancies.
+4. **Error Handling**: Log any missing or incomplete data, handle errors gracefully without halting the pipeline.
+5. **Data Archiving**: Save the processed and merged logs to a designated output location for downstream use.
 
-Data Ingestion: Load DAM and ARCOS logs from specified input paths.
-Data Transformation: Parse and preprocess the logs for consistency and readiness for merging.
-Data Merging: Match and merge DAM and ARCOS logs using user IDs (CAN_ID) and timestamps, with a defined time window to handle discrepancies.
-Error Handling: Log any missing or incomplete data, handle errors gracefully without halting the pipeline.
-Data Archiving: Save the processed and merged logs to a designated output location for downstream use.
-Setup Instructions
-Step 1: Install Dependencies
+## Setup Instructions
+### Step 1: Install Dependencies
 Ensure that the required packages are installed:
-
 bash
-Copy code
 pip install pyspark
 pip install google-cloud-storage
 pip install pandas
-Step 2: Configure Input and Output Paths
+
+
+### Step 2: Configure Input and Output Paths
 Set up the paths for where your DAM and ARCOS logs are stored and where the processed data will be saved. These paths can point to a cloud bucket (e.g., GCS) or an on-premise location.
 
 Step 3: Run the Pipeline
@@ -48,15 +52,15 @@ bash
 Copy code
 python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
 Detailed Steps of the Pipeline
-1. Data Ingestion
+1. **Data Ingestion**
 Load the DAM logs from the input path.
 Load the ARCOS logs from the input path.
 Validate the data to ensure that the necessary columns (CAN_ID, timestamps, actions) are present.
-2. Data Transformation
+2. **Data Transformation**
 Convert timestamps in both datasets to a common format for time-based merging.
 Filter and normalize relevant columns (e.g., action types, database names).
 Standardize CAN_ID formats to ensure uniformity during merging.
-3. Data Merging
+3. **Data Merging**
 Perform a join between DAM and ARCOS logs based on CAN_ID and a defined time window.
 Use a time-tolerance window to match logs within a certain range if exact timestamps are not aligned.
 If no matching ARCOS logs are found for a given CAN_ID, log this event and skip the processing for that ID:
@@ -65,18 +69,18 @@ Copy code
 if arcos_df.count() == 0:
     print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
     return
-4. Error Handling and Skipping Missing Data
+4. **Error Handling and Skipping Missing Data**
 The pipeline logs an error if the DAM or ARCOS logs for a specific date or CAN_ID are missing and proceeds to process the next available data.
 This ensures the pipeline does not halt due to missing or incomplete data, maintaining data continuity for available logs.
-5. Archiving Processed Data
+5. **Archiving Processed Data**
 Write the processed and merged dataset to the specified output location (e.g., cloud storage, a database, or a local file system).
 Ensure that data is stored in a structured format such as Parquet for efficient querying and further processing.
 Challenges Faced
-1. Handling Missing Data
+1. **Handling Missing Data**
 Missing or incomplete data was a significant challenge. The pipeline was designed to handle these scenarios gracefully by logging the issue and continuing with other available data, ensuring uninterrupted processing.
-2. Time Discrepancies Between Logs
+2. **Time Discrepancies Between Logs**
 The timestamps in DAM and ARCOS logs often had slight discrepancies. To mitigate this, a time window was used for merging, allowing logs to be matched within a specified range.
-3. Scalability and Performance
+3. **Scalability and Performance**
 Given the high volume of log data, performance optimization was necessary. Using Apache Spark allowed for parallel data processing, ensuring scalability and preventing memory issues.
 Outcome
 The pipeline achieved its objectives by providing:
