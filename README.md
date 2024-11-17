@@ -84,6 +84,11 @@ Execute the Python script with the required parameters, such as `date` and `CAN_
 
 ## 7. Outcome
 The pipeline achieved its objectives by providing:
+- Automated data pipeline processing 10GB of daily logs from 428 applications, reducing manual processing time by 80% and improving operational efficiency.
+- Developed and maintained Airflow DAGs for orchestrating daily log ingestion and transformation tasks, ensuring seamless data processing and job scheduling.
+- Used PySpark on GCP Dataproc for log transformations, boosting processing speed by 40% and ensuring scalability.
+- Implemented data integrity checks and backfilling using Airflow’s XCom and parameters for accurate data processing.
+- Automated archiving of processed data to GCS, reducing manual file management efforts and improving data storage efficiency.
 - A robust mechanism for processing DAM and ARCOS logs efficiently.
 - The ability to manage missing data without stopping the entire pipeline.
 - A scalable architecture capable of handling large datasets.
