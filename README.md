@@ -46,12 +46,11 @@ The pipeline workflow can be divided into the following steps:
 ### Step 1: Install Dependencies
 Ensure that the required packages are installed:
 
-python
-
+'''bash
 pip install pyspark
 pip install google-cloud-storage
 pip install pandas
-'''
+
 ### Step 2: Configure Input and Output Paths
 
 Set up the paths for where your DAM and ARCOS logs are stored and where the processed data will be saved. These paths can point to a cloud bucket (e.g., GCS) or an on-premise location.
