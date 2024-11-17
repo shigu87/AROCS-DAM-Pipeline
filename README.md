@@ -46,11 +46,6 @@ The pipeline workflow can be divided into the following steps:
 ### Step 1: Install Dependencies
 Ensure that the required packages are installed:
 
-'''bash
-pip install pyspark
-pip install google-cloud-storage
-pip install pandas
-
 ### Step 2: Configure Input and Output Paths
 
 Set up the paths for where your DAM and ARCOS logs are stored and where the processed data will be saved. These paths can point to a cloud bucket (e.g., GCS) or an on-premise location.
@@ -59,9 +54,7 @@ Set up the paths for where your DAM and ARCOS logs are stored and where the proc
 
 Execute the Python script with the required parameters, such as `date` and `CAN_ID`:
 
----
-python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
----
+**python dam_arcos_pipeline.py --date 20240101 --can_id ABC123**
 
 **1. Data Ingestion**
 - Load the DAM logs from the input path.
@@ -149,4 +142,13 @@ python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
 ## Step 4: Review Output
 
 The processed data will be stored in the output directory. Check the log file for any issues or warnings logged during execution.
+
+
+
+```bash
+pip install pyspark
+pip install google-cloud-storage
+pip install pandas
+
+python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
 
