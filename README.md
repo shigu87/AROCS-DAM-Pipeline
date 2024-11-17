@@ -71,11 +71,6 @@ Execute the Python script with the required parameters, such as `date` and `CAN_
 - Use a time-tolerance window to match logs within a certain range if exact timestamps are not aligned.
 - If no matching ARCOS logs are found for a given CAN_ID, log this event and skip the processing for that ID.
 
----
-if arcos_df.count() == 0:
-    print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
-    return
----
 **4. Error Handling and Skipping Missing Data**
 - The pipeline logs an error if the DAM or ARCOS logs for a specific date or CAN_ID are missing and proceeds to process the next available data. This ensures the pipeline does not halt due to missing or incomplete data, maintaining data continuity for available logs.
 
@@ -113,17 +108,7 @@ The pipeline incorporates robust error-handling mechanisms:
 - **Missing DAM Logs**: Logs an error message and skips processing for that specific date.
 - **Missing ARCOS Logs**: Logs an error message for the CAN_ID and skips further processing for that ID.
 - **Data Mismatches**: Skips mismatched or incomplete entries and logs the discrepancies for future review.
-Example:
----
-if dam_df.count() == 0:
-    print(f"No DAM logs found for the date {date}. Skipping to next.")
-    return
----
----
-if arcos_df.count() == 0:
-    print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
-    return
----
+
 ## 11. Running the Pipeline
 
 **Step 1**: Install Required Packages  
@@ -152,3 +137,14 @@ pip install pandas
 
 python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
 
+if arcos_df.count() == 0:
+    print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
+    return
+
+if dam_df.count() == 0:
+    print(f"No DAM logs found for the date {date}. Skipping to next.")
+    return
+
+if arcos_df.count() == 0:
+    print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
+    return
