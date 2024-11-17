@@ -52,53 +52,55 @@ pip install pyspark
 pip install google-cloud-storage
 pip install pandas
 '''
-
 ### Step 2: Configure Input and Output Paths
+
 Set up the paths for where your DAM and ARCOS logs are stored and where the processed data will be saved. These paths can point to a cloud bucket (e.g., GCS) or an on-premise location.
 
 ### Step 3: Run the Pipeline
-Execute the Python script with the required parameters, such as date and CAN_ID:
 
+Execute the Python script with the required parameters, such as `date` and `CAN_ID`:
 
+---
 python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
-
-## 5. Detailed Steps of the Pipeline
---- 
+---
 
 **1. Data Ingestion**
-Load the DAM logs from the input path.
-Load the ARCOS logs from the input path.
-Validate the data to ensure that the necessary columns (CAN_ID, timestamps, actions) are present.
-**2. Data Transformation**
-Convert timestamps in both datasets to a common format for time-based merging.
-Filter and normalize relevant columns (e.g., action types, database names).
-Standardize CAN_ID formats to ensure uniformity during merging.
-**3. Data Merging**
-Perform a join between DAM and ARCOS logs based on CAN_ID and a defined time window.
-Use a time-tolerance window to match logs within a certain range if exact timestamps are not aligned.
-If no matching ARCOS logs are found for a given CAN_ID, log this event and skip the processing for that ID:
+- Load the DAM logs from the input path.
+- Load the ARCOS logs from the input path.
+- Validate the data to ensure that the necessary columns (CAN_ID, timestamps, actions) are present.
 
+**2. Data Transformation**
+- Convert timestamps in both datasets to a common format for time-based merging.
+- Filter and normalize relevant columns (e.g., action types, database names).
+- Standardize CAN_ID formats to ensure uniformity during merging.
+
+**3. Data Merging**
+- Perform a join between DAM and ARCOS logs based on CAN_ID and a defined time window.
+- Use a time-tolerance window to match logs within a certain range if exact timestamps are not aligned.
+- If no matching ARCOS logs are found for a given CAN_ID, log this event and skip the processing for that ID.
+
+---
 if arcos_df.count() == 0:
     print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
     return
+---
 **4. Error Handling and Skipping Missing Data**
-The pipeline logs an error if the DAM or ARCOS logs for a specific date or CAN_ID are missing and proceeds to process the next available data. This ensures the pipeline does not halt due to missing or incomplete data, maintaining data continuity for available logs.
+- The pipeline logs an error if the DAM or ARCOS logs for a specific date or CAN_ID are missing and proceeds to process the next available data. This ensures the pipeline does not halt due to missing or incomplete data, maintaining data continuity for available logs.
 
 **5. Archiving Processed Data**
-Write the processed and merged dataset to the specified output location (e.g., cloud storage, a database, or a local file system). Ensure that data is stored in a structured format such as Parquet for efficient querying and further processing.
+- Write the processed and merged dataset to the specified output location (e.g., cloud storage, a database, or a local file system). Ensure that data is stored in a structured format such as Parquet for efficient querying and further processing.
 
 ## 6. Challenges Faced
-Handling Missing Data: Missing or incomplete data was a significant challenge. The pipeline was designed to handle these scenarios gracefully by logging the issue and continuing with other available data, ensuring uninterrupted processing.
-Time Discrepancies Between Logs: The timestamps in DAM and ARCOS logs often had slight discrepancies. To mitigate this, a time window was used for merging, allowing logs to be matched within a specified range.
-Scalability and Performance: Given the high volume of log data, performance optimization was necessary. Using Apache Spark allowed for parallel data processing, ensuring scalability and preventing memory issues.
+- **Handling Missing Data**: Missing or incomplete data was a significant challenge. The pipeline was designed to handle these scenarios gracefully by logging the issue and continuing with other available data, ensuring uninterrupted processing.
+- **Time Discrepancies Between Logs**: The timestamps in DAM and ARCOS logs often had slight discrepancies. To mitigate this, a time window was used for merging, allowing logs to be matched within a specified range.
+- **Scalability and Performance**: Given the high volume of log data, performance optimization was necessary. Using Apache Spark allowed for parallel data processing, ensuring scalability and preventing memory issues.
+
 ## 7. Outcome
 The pipeline achieved its objectives by providing:
-
-A robust mechanism for processing DAM and ARCOS logs efficiently.
-The ability to manage missing data without stopping the entire pipeline.
-A scalable architecture capable of handling large datasets.
-Processed data that can be used for analysis, auditing, security monitoring, and compliance reporting.
----
+- A robust mechanism for processing DAM and ARCOS logs efficiently.
+- The ability to manage missing data without stopping the entire pipeline.
+- A scalable architecture capable of handling large datasets.
+- Processed data that can be used for analysis, auditing, security monitoring, and compliance reporting.
 
 ## 8. Real-World Usefulness
 This pipeline is particularly valuable for industries such as:
@@ -107,6 +109,7 @@ This pipeline is particularly valuable for industries such as:
 - **Healthcare**: Ensuring data privacy by auditing database access and activities.
 - **E-commerce**: Monitoring user interactions with databases for anomaly detection.
 - **General IT Security**: For tracking suspicious activities and protecting sensitive data.
+
 ## 9. Future Improvements
 - **Real-Time Processing**: Integrating Apache Kafka or other streaming tools to enable real-time log processing.
 - **Enhanced Error Handling**: Implementing advanced error recovery mechanisms, such as retries for failed processes and notifications for critical data issues.
@@ -129,20 +132,22 @@ if arcos_df.count() == 0:
     print(f"No ARCOS logs found for CAN_ID: {can_id}. Skipping processing.")
     return
 ---
-
 ## 11. Running the Pipeline
-**Step 1**: Install Required Packages
+
+**Step 1**: Install Required Packages  
 Ensure all necessary packages are installed as shown in the Setup Instructions.
 
-**Step 2**: Prepare Input Data
+**Step 2**: Prepare Input Data  
 Place your DAM and ARCOS log files in the specified input locations.
 
-**Step 3**: Execute the Pipeline
+**Step 3**: Execute the Pipeline  
 Run the script using the command line:
+
 ---
 python dam_arcos_pipeline.py --date 20240101 --can_id ABC123
-
 ---
 
 ## Step 4: Review Output
+
 The processed data will be stored in the output directory. Check the log file for any issues or warnings logged during execution.
+
